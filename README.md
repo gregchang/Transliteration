@@ -1,3 +1,9 @@
+## Quickstart
+Enter Azure Cognitive Services key in /src/apis/translator.js
+Enter Azure application id in /src/apis/Config.js
+Run `npm install`
+Run `npm start`
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
