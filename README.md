@@ -1,10 +1,11 @@
 ## Quickstart
 Enter Azure Cognitive Services key in /src/apis/translator.js
-Enter Azure application id in /src/apis/Config.js
-Run `npm install`
-Run `npm start`
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Enter Azure application id in /src/apis/Config.js
+
+Run `npm install`
+
+Run `npm start`
 
 ## Available Scripts
 
@@ -72,3 +73,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
