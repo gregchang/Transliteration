@@ -6,7 +6,7 @@ import RomanizationToggle from './RomanizationToggle';
 
 import { UserAgentApplication } from 'msal';
 import { getUserDetails, createNote } from '../apis/GraphService';
-import config from '../apis/Config';
+import config from '../apis/graphConfig';
 
 import toastr from 'toastr';
 
@@ -228,6 +228,7 @@ class OutputBox extends React.Component {
             <button
               className='ui button'
               type='button'
+              disabled={pristine}
               onClick={this.saveToOneNote}
             >
               Save to OneNote
