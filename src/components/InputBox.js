@@ -3,8 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { getWhitespace, fetchTransliteration, fetchTransliterationAndRomanization } from '../actions';
+import { fetchTransliteration, fetchTransliterationAndRomanization } from '../actions';
 import CharacterTypeSelection from './CharacterTypeSelection';
+import RomanizationToggle from './RomanizationToggle';
 
 class InputBox extends React.Component {
   componentDidMount() {
@@ -52,15 +53,18 @@ class InputBox extends React.Component {
 
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
+    const placeholder = '你住的 巷子裡 我租了一間公寓\n為了想與你不期而遇';
 
     return(
       <div className="ui segment">
         <h4 className="ui left aligned header">Input Text</h4>
         <form className="ui form">
           <CharacterTypeSelection parentName="input" />
+          <CharacterTypeSelection parentName='output' />
+          <RomanizationToggle />
           <div className="field">
             <div>
-              <Field name="inputText" component="textarea" ref={(input) => this.textInput = input} />
+              <Field name="inputText" component="textarea" placeholder={placeholder} ref={(input) => this.textInput = input} />
             </div>
           </div>
           <div>
@@ -84,6 +88,6 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps, { getWhitespace, fetchTransliteration, fetchTransliterationAndRomanization })(reduxForm({
+export default connect(mapStateToProps, { fetchTransliteration, fetchTransliterationAndRomanization })(reduxForm({
     form: 'inputBox' // an unique identifier for this form
 })(InputBox));

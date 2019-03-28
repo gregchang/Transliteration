@@ -23,13 +23,6 @@ export const selectLanguage = (language, direction) => {
   }
 };
 
-export const getWhitespace = (whitespace) => {
-  return {
-    type: 'GET_WHITESPACE',
-    payload: whitespace
-  };
-};
-
 export const fetchTransliterationAndRomanization = (text, selectedLanguage, whitespace) => async (dispatch, getState) => {
   await dispatch(fetchTransliteration(text, selectedLanguage));
   await dispatch(fetchTransliteration(text, {...selectedLanguage, ...{output: 'Latn'}}));

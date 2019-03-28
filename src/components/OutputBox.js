@@ -1,8 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import CharacterTypeSelection from './CharacterTypeSelection';
-import RomanizationToggle from './RomanizationToggle';
 
 import { UserAgentApplication } from 'msal';
 import { getUserDetails, createNote } from '../apis/GraphService';
@@ -36,7 +34,6 @@ class OutputBox extends React.Component {
       const { 
         transliteration,
         romanization,
-        whitespace,
         transliterationAndRomanization,
         romanizationEnabled
       } = this.props;
@@ -200,25 +197,27 @@ class OutputBox extends React.Component {
 
   render() {
     const  { pristine } = this.props;
+    const placeholder = `你住的 巷子里 我租了一间公寓
+nǐ zhù de   xiàng zi lǐ   wǒ zū le yì jiān gōng yù
+为了想与你不期而遇
+wèi le xiǎng yǔ nǐ bù qī ér yù`;
 
     return(
       <div className='ui segment'>
         <h4 className='ui left aligned header'>Output Text</h4>
         <form className='ui form'>
-          <CharacterTypeSelection parentName='output' />
-          <RomanizationToggle />
           <div className='field'>
             <div>
               <Field
                 name='outputText'
                 component='textarea'
-                onChange={(e) => this.setState({ transliteration: e.target.value })}
+                placeholder={placeholder}
               />
             </div>
           </div>
           <div>
             <button
-              className='ui primary button'
+              className='ui button'
               type='button'
               disabled={pristine}
               onClick={() => {navigator.clipboard.writeText(this.props.transliteration)}}
@@ -245,7 +244,6 @@ const mapStateToProps = (state) => {
   return {
     transliteration: state.transliteration,
     romanization: state.romanization,
-    whitespace: state.whitespace,
     transliterationAndRomanization: state.transliterationAndRomanization,
     romanizationEnabled: state.romanizationEnabled
   };
