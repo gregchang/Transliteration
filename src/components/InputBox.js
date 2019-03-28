@@ -12,7 +12,7 @@ class InputBox extends React.Component {
     ReactDOM.findDOMNode(this.textInput).focus();
   }
 
-  onSubmit = (data) => {
+  submit = (data) => {
     const rawText = data.inputText;
 
     if (!rawText) {
@@ -48,7 +48,7 @@ class InputBox extends React.Component {
       text = text.substring(0, e.index) + e.text + text.substring(e.index);
     });
 
-    this.props.fetchTransliterationAndRomanization(data.inputText, this.props.selectedLanguage, whitespace);
+    return this.props.fetchTransliterationAndRomanization(data.inputText, this.props.selectedLanguage, whitespace);
   };
 
   render() {
@@ -68,7 +68,7 @@ class InputBox extends React.Component {
             </div>
           </div>
           <div>
-            <button className="ui primary button" type="submit" disabled={pristine || submitting} onClick={handleSubmit(data => this.onSubmit(data))}>
+            <button className="ui primary button" type="submit" disabled={pristine || submitting} onClick={handleSubmit(this.submit)}>
               Submit
             </button>
             <button className="ui button" type="button" disabled={pristine || submitting} onClick={reset}>

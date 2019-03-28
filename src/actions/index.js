@@ -40,7 +40,11 @@ export const fetchTransliterationAndRomanization = (text, selectedLanguage, whit
   for (let i = 0; i < transliterationArray.length; i++) { 
     res.push(transliterationArray[i], '\n', romanizationArray[i], '\n');
   }
-  dispatch({type: 'FETCH_TRANSLITERATION_AND_ROMANIZATION',payload: res.join('')});
+  res = res.join('');
+
+  dispatch({type: 'FETCH_TRANSLITERATION_AND_ROMANIZATION', payload: res});
+
+  return Promise.resolve();
 };
 
 export const fetchTransliteration = (text, selectedLanguage) => async (dispatch) => {
