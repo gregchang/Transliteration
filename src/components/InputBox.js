@@ -3,15 +3,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { getWhitespace, fetchTransliteration, fetchTransliterationAndRomanization } from '../actions';
+import { fetchTransliteration, fetchTransliterationAndRomanization } from '../actions';
 import CharacterTypeSelection from './CharacterTypeSelection';
+import RomanizationToggle from './RomanizationToggle';
 
 class InputBox extends React.Component {
   componentDidMount() {
     ReactDOM.findDOMNode(this.textInput).focus();
   }
 
-  onSubmit = (data) => {
+  submit = (data) => {
     const rawText = data.inputText;
 
     if (!rawText) {
@@ -47,24 +48,27 @@ class InputBox extends React.Component {
       text = text.substring(0, e.index) + e.text + text.substring(e.index);
     });
 
-    this.props.fetchTransliterationAndRomanization(data.inputText, this.props.selectedLanguage, whitespace);
+    return this.props.fetchTransliterationAndRomanization(data.inputText, this.props.selectedLanguage, whitespace);
   };
 
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
+    const placeholder = '你住的 巷子裡 我租了一間公寓\n為了想與你不期而遇';
 
     return(
       <div className="ui segment">
         <h4 className="ui left aligned header">Input Text</h4>
         <form className="ui form">
           <CharacterTypeSelection parentName="input" />
+          <CharacterTypeSelection parentName='output' />
+          <RomanizationToggle />
           <div className="field">
             <div>
-              <Field name="inputText" component="textarea" ref={(input) => this.textInput = input} />
+              <Field name="inputText" component="textarea" placeholder={placeholder} ref={(input) => this.textInput = input} />
             </div>
           </div>
           <div>
-            <button className="ui primary button" type="submit" disabled={pristine || submitting} onClick={handleSubmit(data => this.onSubmit(data))}>
+            <button className="ui primary button" type="submit" disabled={pristine || submitting} onClick={handleSubmit(this.submit)}>
               Submit
             </button>
             <button className="ui button" type="button" disabled={pristine || submitting} onClick={reset}>
@@ -84,6 +88,6 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps, { getWhitespace, fetchTransliteration, fetchTransliterationAndRomanization })(reduxForm({
+export default connect(mapStateToProps, { fetchTransliteration, fetchTransliterationAndRomanization })(reduxForm({
     form: 'inputBox' // an unique identifier for this form
 })(InputBox));

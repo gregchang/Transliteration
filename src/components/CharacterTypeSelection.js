@@ -21,9 +21,11 @@ class CharacterTypeSelection extends Component {
   }
 
   render() {
+    const { parentName } = this.props;
+    
     return(
       <div className="inline fields">
-        <label htmlFor={this.characterType}>Chinese character type:</label>
+        <label htmlFor={this.characterType}>{parentName[0].toUpperCase() + parentName.slice(1)} Chinese character type:</label>
         <div className="field">
           <div className="ui radio">
             <label>

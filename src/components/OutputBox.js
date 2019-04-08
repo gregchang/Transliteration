@@ -1,14 +1,13 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import CharacterTypeSelection from './CharacterTypeSelection';
-import RomanizationToggle from './RomanizationToggle';
 
 import { UserAgentApplication } from 'msal';
 import { getUserDetails, createNote } from '../apis/GraphService';
-import config from '../apis/Config';
+import { config } from '../apis/graphConfig';
 
 import toastr from 'toastr';
+import DropdownFloating from './DropdownFloating';
 
 class OutputBox extends React.Component {
   constructor(props) {
@@ -36,7 +35,6 @@ class OutputBox extends React.Component {
       const { 
         transliteration,
         romanization,
-        whitespace,
         transliterationAndRomanization,
         romanizationEnabled
       } = this.props;
@@ -186,53 +184,68 @@ class OutputBox extends React.Component {
     this.login();
   }
 
-  showLogout = () => {
+  renderSave = () => {
+    const  { pristine } = this.props;
+
     if (!this.state.isAuthenticated) {
-      return;
+      return(
+        <button
+        className='ui button'
+        type='button'
+        disabled={pristine}
+        onClick={this.saveToOneNote}
+        >
+          Save to OneNote
+        </button>
+      );
     }
 
+    const options = [
+      { key: 'sign-out', icon: 'sign-out', text: 'Logout of OneNote', value: 'oneNoteSignout' }
+    ]
+
     return(
-      <button className='ui button' type='button' onClick={this.logout}>
-        Logout
-      </button>
+      <DropdownFloating
+        disabled={pristine}
+        text='Save to OneNote'
+        options={options}
+        mainButtonAction={this.saveToOneNote}
+        dropdownActions={{'oneNoteSignout':this.logout}}
+        logout={this.logout}
+      />
     );
   }
 
   render() {
     const  { pristine } = this.props;
+    const placeholder = `你住的 巷子里 我租了一间公寓
+nǐ zhù de   xiàng zi lǐ   wǒ zū le yì jiān gōng yù
+为了想与你不期而遇
+wèi le xiǎng yǔ nǐ bù qī ér yù`;
 
     return(
       <div className='ui segment'>
         <h4 className='ui left aligned header'>Output Text</h4>
         <form className='ui form'>
-          <CharacterTypeSelection parentName='output' />
-          <RomanizationToggle />
           <div className='field'>
             <div>
               <Field
                 name='outputText'
                 component='textarea'
-                onChange={(e) => this.setState({ transliteration: e.target.value })}
+                placeholder={placeholder}
               />
             </div>
           </div>
           <div>
             <button
-              className='ui primary button'
+              className='ui button'
               type='button'
               disabled={pristine}
               onClick={() => {navigator.clipboard.writeText(this.props.transliteration)}}
             >
               Copy
             </button>
-            <button
-              className='ui button'
-              type='button'
-              onClick={this.saveToOneNote}
-            >
-              Save to OneNote
-            </button>
-            {this.showLogout()}
+            {this.renderSave()}
           </div>
         </form>
       </div>
@@ -244,7 +257,6 @@ const mapStateToProps = (state) => {
   return {
     transliteration: state.transliteration,
     romanization: state.romanization,
-    whitespace: state.whitespace,
     transliterationAndRomanization: state.transliterationAndRomanization,
     romanizationEnabled: state.romanizationEnabled
   };
