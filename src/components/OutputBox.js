@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 
 import { UserAgentApplication } from 'msal';
 import { getUserDetails, createNote } from '../apis/GraphService';
-import config from '../apis/graphConfig';
+import { config } from '../apis/graphConfig';
 
 import toastr from 'toastr';
+import DropdownFloating from './DropdownFloating';
 
 class OutputBox extends React.Component {
   constructor(props) {
@@ -183,15 +184,35 @@ class OutputBox extends React.Component {
     this.login();
   }
 
-  showLogout = () => {
+  renderSave = () => {
+    const  { pristine } = this.props;
+
     if (!this.state.isAuthenticated) {
-      return;
+      return(
+        <button
+        className='ui button'
+        type='button'
+        disabled={pristine}
+        onClick={this.saveToOneNote}
+        >
+          Save to OneNote
+        </button>
+      );
     }
 
+    const options = [
+      { key: 'sign-out', icon: 'sign-out', text: 'Logout of OneNote', value: 'oneNoteSignout' }
+    ]
+
     return(
-      <button className='ui button' type='button' onClick={this.logout}>
-        Logout
-      </button>
+      <DropdownFloating
+        disabled={pristine}
+        text='Save to OneNote'
+        options={options}
+        mainButtonAction={this.saveToOneNote}
+        dropdownActions={{'oneNoteSignout':this.logout}}
+        logout={this.logout}
+      />
     );
   }
 
@@ -224,15 +245,7 @@ wèi le xiǎng yǔ nǐ bù qī ér yù`;
             >
               Copy
             </button>
-            <button
-              className='ui button'
-              type='button'
-              disabled={pristine}
-              onClick={this.saveToOneNote}
-            >
-              Save to OneNote
-            </button>
-            {this.showLogout()}
+            {this.renderSave()}
           </div>
         </form>
       </div>
